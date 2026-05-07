@@ -157,29 +157,14 @@
     background:var(--paper);
     box-shadow:var(--shadow);
     overflow:hidden;
-    width:min(100%, 560px);
-    max-height:calc(100vh - 96px);
+    max-width:480px;
     margin:0 auto;
-    display:grid;
-    place-items:center;
   }
   .work-img::after{
-    content:"";position:absolute;inset:14px;pointer-events:none;
-    background:
-      linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.4)) top left / 100% 1px no-repeat,
-      linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.4)) bottom left / 100% 1px no-repeat,
-      linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.4)) left center / 1px 25% no-repeat,
-      linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.4)) right center / 1px 25% no-repeat;
+    content:"";position:absolute;inset:14px;border:1px solid rgba(255,255,255,.4);pointer-events:none;
   }
-  .work-img img{
-    width:auto;
-    max-width:100%;
-    height:auto;
-    max-height:calc(100vh - 96px);
-    object-fit:contain;
-    transition:transform 1.2s ease;
-  }
-  .work-img:hover img{transform:none}
+  .work-img img{width:100%;height:auto;object-fit:contain;transition:transform 1.2s ease;max-height:85vh}
+  .work-img:hover img{transform:scale(1.02)}
   /* 占位图样式（如果图片缺失） */
   .work-img .ph{
     position:absolute;inset:0;display:grid;place-items:center;
@@ -192,6 +177,7 @@
     font-family:"Cormorant Garamond",serif;font-style:italic;letter-spacing:.3em;font-size:12px;
     z-index:2;
   }
+
   .work-text{padding:0}
   .work-text .meta{display:flex;align-items:center;gap:14px;color:var(--ink-3);font-size:12px;letter-spacing:.3em;margin-bottom:24px}
   .work-text .meta .dot{width:5px;height:5px;background:var(--accent);border-radius:50%}
@@ -261,8 +247,6 @@
     .work,.work:nth-child(even){grid-template-columns:1fr;gap:40px}
     .work:nth-child(even) .work-img{order:0}
     .work:nth-child(even) .work-text{order:0}
-    .work-img{width:min(100%, 520px);max-height:none}
-    .work-img img{width:100%;max-height:none}
     nav.tabs{display:none}
   }
   @media (max-width: 540px){
