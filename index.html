@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>光阴的诗 · 二十四节气视觉笔记</title>
+<style>
+  /* ============== 基础变量 ============== */
+  :root{
+    --bg:        #f3eee5;          /* 主背景：宣纸米白 */
+    --bg-alt:   #ebe4d6;           /* 次背景：暖灰麻 */
+    --paper:    #faf6ed;           /* 卡片纸面 */
+    --ink:      #2b2622;           /* 主文：墨色 */
+    --ink-2:    #5a4f47;           /* 次文：淡墨 */
+    --ink-3:    #8a7e72;           /* 弱文 */
+    --accent:   #a8431e;           /* 朱砂 */
+    --accent-2: #c8a96a;           /* 描金 */
+    --line:     #d6cdbb;           /* 分割 */
+    --shadow:   0 30px 60px -25px rgba(60,45,35,.35);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);
+    font-family:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",ui-serif,Georgia,serif;
+    -webkit-font-smoothing:antialiased;line-height:1.7;}
+  img{display:block;max-width:100%;height:auto}
+  a{color:inherit;text-decoration:none}
+
+  /* ============== 通用排版 ============== */
+  .wrap{max-width:1280px;margin:0 auto;padding:0 6vw}
+  .eyebrow{font-family:"Cormorant Garamond","EB Garamond",Georgia,serif;
+    font-style:italic;letter-spacing:.18em;color:var(--ink-3);
+    text-transform:uppercase;font-size:13px}
+  .rule{height:1px;background:var(--line);width:100%}
+  .v-rule{width:1px;background:var(--line)}
+  .num{font-family:"Cormorant Garamond",Georgia,serif;
+    font-weight:500;font-feature-settings:"lnum";color:var(--accent);}
+
+  /* ============== 顶栏 ============== */
+  header.topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(243,238,229,.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;
+    padding-top:18px;padding-bottom:18px}
+  .brand{display:flex;align-items:baseline;gap:14px}
+  .brand b{font-weight:600;letter-spacing:.35em;font-size:15px}
+  .brand span{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--ink-3);font-size:13px}
+  nav.tabs a{margin-left:28px;font-size:13px;letter-spacing:.2em;color:var(--ink-2)}
+  nav.tabs a:hover{color:var(--accent)}
+
+  /* ============== 封面 ============== */
+  .cover{
+    position:relative;min-height:92vh;
+    display:grid;grid-template-columns:1fr 1fr;gap:0;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .cover-left{padding:9vw 6vw 6vw;display:flex;flex-direction:column;justify-content:space-between;position:relative}
+  .cover-left::before{
+    content:"";position:absolute;left:6vw;top:9vw;
+    width:48px;height:48px;border-top:1px solid var(--accent);border-left:1px solid var(--accent);
+  }
+  .cover-meta{display:flex;gap:24px;align-items:center;color:var(--ink-3);font-size:12px;letter-spacing:.25em}
+  .cover-meta .dot{width:6px;height:6px;background:var(--accent);border-radius:50%}
+  .cover-title{margin-top:5vh}
+  .cover-title h1{
+    font-size:clamp(56px, 9vw, 138px);
+    line-height:.95;font-weight:500;letter-spacing:.02em;
+    color:var(--ink);
+  }
+  .cover-title h1 .accent{color:var(--accent);font-style:italic;font-family:"Cormorant Garamond",serif;font-weight:500}
+  .cover-sub{margin-top:34px;max-width:520px;color:var(--ink-2);font-size:16px;line-height:1.95}
+  .cover-foot{margin-top:8vh;display:flex;justify-content:space-between;align-items:flex-end;font-size:12px;letter-spacing:.2em;color:var(--ink-3)}
+  .cover-foot .seal{
+    width:64px;height:64px;border:1px solid var(--accent);color:var(--accent);
+    display:grid;place-items:center;font-size:11px;letter-spacing:.3em;
+    transform:rotate(-4deg);
+  }
+
+  .cover-right{
+    background:linear-gradient(135deg,#e8ddc7,#d9c9a8 60%,#bfa177);
+    position:relative;overflow:hidden;
+  }
+  .cover-right .stamp{
+    position:absolute;right:8%;top:10%;
+    font-family:"Cormorant Garamond",serif;font-style:italic;
+    color:rgba(43,38,34,.35);font-size:14px;letter-spacing:.4em;
+    writing-mode:vertical-rl;
+  }
+  .cover-art{
+    position:absolute;inset:8% 8% 8% 8%;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,.5), transparent 55%),
+      radial-gradient(circle at 70% 70%, rgba(168,67,30,.25), transparent 50%),
+      linear-gradient(180deg, rgba(255,255,255,.15), rgba(43,38,34,.1));
+    border:1px solid rgba(43,38,34,.1);
+    display:grid;place-items:center;
+    overflow:hidden;
+  }
+  .cover-art .ch{
+    font-size:clamp(120px, 22vw, 360px);
+    color:rgba(43,38,34,.12);
+    font-weight:400;letter-spacing:.02em;
+    user-select:none;
+  }
+  .cover-art .ring{
+    position:absolute;width:62%;aspect-ratio:1;border:1px dashed rgba(43,38,34,.25);border-radius:50%;
+    animation:spin 60s linear infinite;
+  }
+  .cover-art .ring.r2{width:78%;border-style:solid;opacity:.35;animation-duration:120s;animation-direction:reverse}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ============== 目录 ============== */
+  section.toc{padding:14vh 0 10vh;border-bottom:1px solid var(--line)}
+  .section-head{display:grid;grid-template-columns:1fr 2fr;gap:6vw;align-items:end;margin-bottom:8vh}
+  .section-head h2{font-size:clamp(40px,5vw,72px);line-height:1;font-weight:500;letter-spacing:.04em}
+  .section-head h2 em{font-style:italic;font-family:"Cormorant Garamond",serif;color:var(--accent)}
+  .section-head p{color:var(--ink-2);max-width:46ch;font-size:15px}
+
+  .toc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .toc-grid a{
+    display:flex;flex-direction:column;justify-content:space-between;
+    padding:26px 22px;min-height:160px;
+    border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    background:transparent;transition:.4s ease;position:relative;overflow:hidden;
+  }
+  .toc-grid a:hover{background:var(--paper);transform:translateY(-2px)}
+  .toc-grid a .num{font-size:32px}
+  .toc-grid a .name{font-size:22px;font-weight:500;letter-spacing:.06em}
+  .toc-grid a .en{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--ink-3);font-size:13px;margin-top:6px}
+  .toc-grid a .arrow{position:absolute;right:16px;bottom:16px;font-family:"Cormorant Garamond",serif;color:var(--ink-3);transition:.3s}
+  .toc-grid a:hover .arrow{color:var(--accent);transform:translateX(4px)}
+
+  /* 季节带 */
+  .season-row{display:flex;align-items:center;gap:18px;margin:8vh 0 3vh;padding:0 0;color:var(--ink-3)}
+  .season-row .tag{
+    font-family:"Cormorant Garamond",serif;font-style:italic;font-size:15px;letter-spacing:.3em;
+    color:var(--accent);text-transform:uppercase;
+  }
+  .season-row .ch{font-size:14px;letter-spacing:.5em;color:var(--ink-2)}
+  .season-row .line{flex:1;height:1px;background:var(--line)}
+
+  /* ============== 作品 ============== */
+  section.works{padding:6vh 0 10vh}
+  .work{
+    display:grid;grid-template-columns:1.05fr .95fr;gap:7vw;
+    padding:14vh 0;border-bottom:1px solid var(--line);align-items:center;
+  }
+  .work:nth-child(even){grid-template-columns:.95fr 1.05fr}
+  .work:nth-child(even) .work-img{order:2}
+  .work:nth-child(even) .work-text{order:1}
+
+  .work-img{
+    position:relative;
+    background:var(--paper);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    width:min(100%, 560px);
+    max-height:calc(100vh - 96px);
+    margin:0 auto;
+    display:grid;
+    place-items:center;
+  }
+  .work-img::after{
+    content:"";position:absolute;inset:14px;pointer-events:none;
+    background:
+      linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.4)) top left / 100% 1px no-repeat,
+      linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.4)) bottom left / 100% 1px no-repeat,
+      linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.4)) left center / 1px 25% no-repeat,
+      linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,.4)) right center / 1px 25% no-repeat;
+  }
+  .work-img img{
+    width:auto;
+    max-width:100%;
+    height:auto;
+    max-height:calc(100vh - 96px);
+    object-fit:contain;
+    transition:transform 1.2s ease;
+  }
+  .work-img:hover img{transform:none}
+  /* 占位图样式（如果图片缺失） */
+  .work-img .ph{
+    position:absolute;inset:0;display:grid;place-items:center;
+    background:
+      linear-gradient(135deg,#e3d6bf,#c8b289 70%,#a78656);
+    color:rgba(43,38,34,.18);font-size:24vh;font-weight:400;
+  }
+  .work-img .corner{
+    position:absolute;left:16px;top:16px;color:#fff;mix-blend-mode:difference;
+    font-family:"Cormorant Garamond",serif;font-style:italic;letter-spacing:.3em;font-size:12px;
+    z-index:2;
+  }
+  .work-text{padding:0}
+  .work-text .meta{display:flex;align-items:center;gap:14px;color:var(--ink-3);font-size:12px;letter-spacing:.3em;margin-bottom:24px}
+  .work-text .meta .dot{width:5px;height:5px;background:var(--accent);border-radius:50%}
+  .work-text h3{
+    font-size:clamp(56px,7vw,108px);line-height:.95;font-weight:500;letter-spacing:.06em;
+    color:var(--ink);
+  }
+  .work-text h3 .en{
+    display:block;font-family:"Cormorant Garamond",serif;font-style:italic;
+    font-size:.28em;color:var(--ink-3);letter-spacing:.18em;margin-top:18px;font-weight:400;
+  }
+  .work-text .intro{
+    margin-top:36px;font-size:16px;line-height:2;color:var(--ink-2);max-width:48ch;
+    border-left:2px solid var(--accent);padding-left:22px;
+  }
+  details.prompt{
+    margin-top:34px;border-top:1px solid var(--line);padding-top:18px;
+  }
+  details.prompt summary{
+    cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;
+    color:var(--ink-3);font-size:12px;letter-spacing:.3em;
+  }
+  details.prompt summary::-webkit-details-marker{display:none}
+  details.prompt[open] summary{color:var(--accent)}
+  details.prompt summary::after{content:"+";font-family:serif}
+  details.prompt[open] summary::after{content:"−"}
+  details.prompt p{
+    margin-top:18px;font-size:13.5px;line-height:1.95;color:var(--ink-2);
+    background:var(--paper);padding:18px 20px;border:1px solid var(--line);
+  }
+
+  /* ============== 结语 ============== */
+  section.outro{
+    padding:18vh 0 14vh;text-align:center;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(168,67,30,.06), transparent 60%),
+      var(--bg);
+    border-top:1px solid var(--line);
+  }
+  .outro h2{font-size:clamp(38px,4.5vw,64px);line-height:1.2;font-weight:500;letter-spacing:.06em}
+  .outro h2 em{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--accent)}
+  .outro p{margin:36px auto 0;max-width:54ch;color:var(--ink-2);font-size:16px;line-height:2}
+  .outro .seal{
+    margin:60px auto 0;width:72px;height:72px;border:1px solid var(--accent);color:var(--accent);
+    display:grid;place-items:center;font-size:11px;letter-spacing:.3em;transform:rotate(-3deg);
+  }
+
+  footer{padding:32px 0 48px;border-top:1px solid var(--line);
+    color:var(--ink-3);font-size:12px;letter-spacing:.25em;text-align:center}
+
+  /* 回到顶部 */
+  .top{
+    position:fixed;right:24px;bottom:24px;width:46px;height:46px;
+    background:var(--ink);color:var(--bg);display:grid;place-items:center;
+    font-family:"Cormorant Garamond",serif;border-radius:50%;z-index:60;
+    box-shadow:var(--shadow);transition:.3s;opacity:0;pointer-events:none;
+  }
+  .top.show{opacity:1;pointer-events:auto}
+  .top:hover{background:var(--accent)}
+
+  /* ============== 响应式 ============== */
+  @media (max-width: 980px){
+    .cover{grid-template-columns:1fr;min-height:auto}
+    .cover-right{aspect-ratio:4/5}
+    .section-head{grid-template-columns:1fr;gap:24px}
+    .toc-grid{grid-template-columns:repeat(2,1fr)}
+    .work,.work:nth-child(even){grid-template-columns:1fr;gap:40px}
+    .work:nth-child(even) .work-img{order:0}
+    .work:nth-child(even) .work-text{order:0}
+    .work-img{width:min(100%, 520px);max-height:none}
+    .work-img img{width:100%;max-height:none}
+    nav.tabs{display:none}
+  }
+  @media (max-width: 540px){
+    .toc-grid{grid-template-columns:1fr}
+    .cover-meta{flex-wrap:wrap;gap:10px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 顶栏 ===== -->
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <b>光阴的诗</b>
+      <span>The Poetics of Time · A Visual Almanac</span>
+    </div>
+    <nav class="tabs">
+      <a href="#cover">封面</a>
+      <a href="#toc">目录</a>
+      <a href="#works">作品</a>
+      <a href="#outro">结语</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== 封面 ===== -->
+<section class="cover" id="cover">
+  <div class="cover-left">
+    <div class="cover-meta">
+      <span>VOL. 01</span>
+      <span class="dot"></span>
+      <span>2026 / SPRING — WINTER</span>
+      <span class="dot"></span>
+      <span>VISUAL NOTES</span>
+    </div>
+
+    <div class="cover-title">
+      <p class="eyebrow" style="margin-bottom:18px">A Visual Almanac of 24 Solar Terms</p>
+      <h1>光阴的诗<br><span class="accent">二十四节气</span></h1>
+    </div>
+
+    <p class="cover-sub">
+      二十四节气，是中国人对时间的诗意划分。每一候、每一节，都藏着古人对天地的观察与生活的智慧。
+      本作品集以中国风山水版画为基调，结合淡水彩、吹墨、二次曝光与蒙太奇等手法，
+      为每一个节气创作一幅富有叙事感的视觉海报——一个小女孩、一只猫和一条狗穿行四季，
+      成为这一年风景的温柔注脚。
+    </p>
+
+    <div class="cover-foot">
+      <span>VISUAL · NARRATIVE · POSTER</span>
+      <div class="seal">節氣</div>
+    </div>
+  </div>
+
+  <div class="cover-right">
+    <div class="stamp">SOLAR · TERMS · MMXXVI</div>
+    <div class="cover-art">
+      <div class="ring r2"></div>
+      <div class="ring"></div>
+      <div class="ch">節氣</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 目录 ===== -->
+<section class="toc" id="toc">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>目 <em>录</em><br>Index</h2>
+      <p>四季流转，二十四帧。点击任一节气可直接跳转至作品页，每件作品都包含一帧海报、一段提示词与一段简介。</p>
+    </div>
+
+    <!-- 春 -->
+    <div class="season-row">
+      <span class="tag">Spring</span>
+      <span class="ch">春</span>
+      <span class="line"></span>
+    </div>
+    <div class="toc-grid">
+      <a href="#item-1"><span class="num">01</span><div><div class="name">立春</div><div class="en">Beginning of Spring</div></div><span class="arrow">→</span></a>
+      <a href="#item-2"><span class="num">02</span><div><div class="name">雨水</div><div class="en">Rain Water</div></div><span class="arrow">→</span></a>
+      <a href="#item-3"><span class="num">03</span><div><div class="name">惊蛰</div><div class="en">Awakening of Insects</div></div><span class="arrow">→</span></a>
+      <a href="#item-4"><span class="num">04</span><div><div class="name">春分</div><div class="en">Vernal Equinox</div></div><span class="arrow">→</span></a>
+      <a href="#item-5"><span class="num">05</span><div><div class="name">清明</div><div class="en">Clear and Bright</div></div><span class="arrow">→</span></a>
+      <a href="#item-6"><span class="num">06</span><div><div class="name">谷雨</div><div class="en">Grain Rain</div></div><span class="arrow">→</span></a>
+    </div>
+
+    <!-- 夏 -->
+    <div class="season-row">
+      <span class="tag">Summer</span>
+      <span class="ch">夏</span>
+      <span class="line"></span>
+    </div>
+    <div class="toc-grid">
+      <a href="#item-7"><span class="num">07</span><div><div class="name">立夏</div><div class="en">Beginning of Summer</div></div><span class="arrow">→</span></a>
+      <a href="#item-8"><span class="num">08</span><div><div class="name">小满</div><div class="en">Grain Buds</div></div><span class="arrow">→</span></a>
+      <a href="#item-9"><span class="num">09</span><div><div class="name">芒种</div><div class="en">Grain in Ear</div></div><span class="arrow">→</span></a>
+      <a href="#item-10"><span class="num">10</span><div><div class="name">夏至</div><div class="en">Summer Solstice</div></div><span class="arrow">→</span></a>
+      <a href="#item-11"><span class="num">11</span><div><div class="name">小暑</div><div class="en">Minor Heat</div></div><span class="arrow">→</span></a>
+      <a href="#item-12"><span class="num">12</span><div><div class="name">大暑</div><div class="en">Major Heat</div></div><span class="arrow">→</span></a>
+    </div>
+
+    <!-- 秋 -->
+    <div class="season-row">
+      <span class="tag">Autumn</span>
+      <span class="ch">秋</span>
+      <span class="line"></span>
+    </div>
+    <div class="toc-grid">
+      <a href="#item-13"><span class="num">13</span><div><div class="name">立秋</div><div class="en">Beginning of Autumn</div></div><span class="arrow">→</span></a>
+      <a href="#item-14"><span class="num">14</span><div><div class="name">处暑</div><div class="en">End of Heat</div></div><span class="arrow">→</span></a>
+      <a href="#item-15"><span class="num">15</span><div><div class="name">白露</div><div class="en">White Dew</div></div><span class="arrow">→</span></a>
+      <a href="#item-16"><span class="num">16</span><div><div class="name">秋分</div><div class="en">Autumnal Equinox</div></div><span class="arrow">→</span></a>
+      <a href="#item-17"><span class="num">17</span><div><div class="name">寒露</div><div class="en">Cold Dew</div></div><span class="arrow">→</span></a>
+      <a href="#item-18"><span class="num">18</span><div><div class="name">霜降</div><div class="en">Frost's Descent</div></div><span class="arrow">→</span></a>
+    </div>
+
+    <!-- 冬 -->
+    <div class="season-row">
+      <span class="tag">Winter</span>
+      <span class="ch">冬</span>
+      <span class="line"></span>
+    </div>
+    <div class="toc-grid">
+      <a href="#item-19"><span class="num">19</span><div><div class="name">立冬</div><div class="en">Beginning of Winter</div></div><span class="arrow">→</span></a>
+      <a href="#item-20"><span class="num">20</span><div><div class="name">小雪</div><div class="en">Light Snow</div></div><span class="arrow">→</span></a>
+      <a href="#item-21"><span class="num">21</span><div><div class="name">大雪</div><div class="en">Major Snow</div></div><span class="arrow">→</span></a>
+      <a href="#item-22"><span class="num">22</span><div><div class="name">冬至</div><div class="en">Winter Solstice</div></div><span class="arrow">→</span></a>
+      <a href="#item-23"><span class="num">23</span><div><div class="name">小寒</div><div class="en">Minor Cold</div></div><span class="arrow">→</span></a>
+      <a href="#item-24"><span class="num">24</span><div><div class="name">大寒</div><div class="en">Major Cold</div></div><span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 作品展示 ===== -->
+<section class="works" id="works">
+  <div class="wrap">
+
+    <!-- 1 立春 -->
+    <article class="work" id="item-1">
+      <div class="work-img">
+        <span class="corner">No. 01 / 24</span>
+        <img src="图片素材/1-立春.png" alt="立春" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">立春</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 01</span><span class="dot"></span><span>SPRING · 春</span></div>
+        <h3>立春<span class="en">Beginning of Spring</span></h3>
+        <p class="intro">立春为二十四节气之首，斗指东北，太阳到达黄经315°，标志着春季的开端与万物的起始。此时东风解冻，蛰虫始振，鱼陟负冰，大地从沉睡中苏醒，草木悄悄萌发新芽。民间素有咬春、打春牛、贴春字、迎春神等丰富习俗，承载着对新一年风调雨顺、五谷丰登的美好期盼。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"立春"粒子消散字体，署名小字"二十四节气"，三级信息"Beginning of Spring"，中国风山水版画风格，淡水彩，吹墨艺术，富有情绪的叙事画面，一个小女孩牵着狗、抱着猫站在田埂上，远处风筝刚飞起，草芽破土，薄雾中有燕子低飞，二次曝光+蒙太奇式的晕染，肌理呈磨砂质感，朦胧，模糊，涂鸦，粗糙笔刷毛边，粗糙颗粒磨砂玻璃，点彩，岩彩，cloudcore，弥散，梦幻，高级，极简主义风格，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 2 雨水 -->
+    <article class="work" id="item-2">
+      <div class="work-img">
+        <span class="corner">No. 02 / 24</span>
+        <img src="图片素材/2-雨水.png" alt="雨水" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">雨水</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 02</span><span class="dot"></span><span>SPRING · 春</span></div>
+        <h3>雨水<span class="en">Rain Water</span></h3>
+        <p class="intro">雨水是二十四节气中的第二个节气，太阳到达黄经330°，标志着降雨的开始与雨量的逐渐增多。此时气温回升，冰雪消融，草木萌动，獭祭鱼，鸿雁北归，天地间弥漫着湿润的生机。民间素有"春雨贵如油"之说，认为这场细雨能滋润万物、孕育丰收，更有占稻色、拉保保等富有人情味的传统民俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"雨水"粒子消散字体，三级信息"Rain Water"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩撑着油纸伞蹲在河边，猫躲在伞下，狗仰头接雨滴，水面泛起涟漪，远山被雨雾笼罩，二次曝光+蒙太奇式的晕染，肌理呈磨砂质感，cloudcore，弥散，梦幻，极简主义风格，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 3 惊蛰 -->
+    <article class="work" id="item-3">
+      <div class="work-img">
+        <span class="corner">No. 03 / 24</span>
+        <img src="图片素材/3-惊蛰.png" alt="惊蛰" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">惊蛰</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 03</span><span class="dot"></span><span>SPRING · 春</span></div>
+        <h3>惊蛰<span class="en">Awakening of Insects</span></h3>
+        <p class="intro">惊蛰为春季第三个节气，太阳到达黄经345°，意味着春雷乍动、蛰伏冬眠的昆虫被惊醒，大地全面进入春耕季节。此时桃花含笑绽红，李花素白如雪，黄莺婉转啼鸣，仓庚鸣而鹰化为鸠。农谚有"到了惊蛰节，锄头不停歇"之说，民间还有祭白虎、吃梨、蒙鼓皮等驱邪祈福的传统习俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"惊蛰"粒子消散字体，三级信息"Awakening of Insects"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩趴在草地上，猫好奇地用爪子碰一只刚从土里钻出的甲虫，狗对着远处的春雷吠叫，野花初绽，二次曝光+蒙太奇式晕染，cloudcore，弥散，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 4 春分 -->
+    <article class="work" id="item-4">
+      <div class="work-img">
+        <span class="corner">No. 04 / 24</span>
+        <img src="图片素材/4-春分.png" alt="春分" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">春分</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 04</span><span class="dot"></span><span>SPRING · 春</span></div>
+        <h3>春分<span class="en">Vernal Equinox</span></h3>
+        <p class="intro">春分日太阳直射赤道，全球昼夜几乎平分，此后北半球白昼渐长、黑夜渐短。古时又称"日中""日夜分"，玄鸟至，雷乃发声，始电闪烁，桃红柳绿，菜花金黄，正是春意最浓、风光最盛之时。民间有立蛋、吃春菜、放风筝、送春牛图等饶有趣味的习俗，寄托着祈福纳祥、敬天惜春的朴素情怀。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"春分"粒子消散字体，三级信息"Vernal Equinox"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩站在开满油菜花的山坡上，左手牵狗右手抱猫，头顶有南北归的雁群排成人字，太阳刚刚升到正中天，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 5 清明 -->
+    <article class="work" id="item-5">
+      <div class="work-img">
+        <span class="corner">No. 05 / 24</span>
+        <img src="图片素材/5-清明.png" alt="清明" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">清明</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 05</span><span class="dot"></span><span>SPRING · 春</span></div>
+        <h3>清明<span class="en">Clear and Bright</span></h3>
+        <p class="intro">清明既是二十四节气之一，又是中华民族重要的传统节日。此时太阳到达黄经15°，气清景明，万物皆显，桐始华，田鼠化为鴽，虹始见，正是天朗气清、惠风和畅的时节。人们怀着虔敬之心扫墓祭祖、慎终追远，也走出家门踏青插柳、放飞纸鸢、荡秋千、蹴鞠戏水，享用青团、馓子、清明粿等时令美食。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"清明"粒子消散字体，三级信息"Clear and Bright"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩提着竹篮走在茶山上，猫蹲在篮子里，狗在前面带路，远处有牧童和牛，春雨如丝，纸鸢断线挂在高树枝头，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 6 谷雨 -->
+    <article class="work" id="item-6">
+      <div class="work-img">
+        <span class="corner">No. 06 / 24</span>
+        <img src="图片素材/6-谷雨.png" alt="谷雨" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">谷雨</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 06</span><span class="dot"></span><span>SPRING · 春</span></div>
+        <h3>谷雨<span class="en">Grain Rain</span></h3>
+        <p class="intro">谷雨是春季最后一个节气，源自"雨生百谷"之意，太阳到达黄经30°，雨水显著增多，温度稳定回升，最有利于谷类作物的生长发育。此时萍始生，鸣鸠拂其羽，戴胜降于桑，柳絮飞落，牡丹吐蕊，樱桃红熟。江南有采谷雨茶、食香椿、赏牡丹的雅俗，北方则有祭仓颉、走谷雨等独特习俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"谷雨"粒子消散字体，三级信息"Grain Rain"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩戴着斗笠在水田边插秧，猫趴在田埂上睡觉，狗在追逐一只白鹭，雨滴打在秧苗上溅起水花，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 7 立夏 -->
+    <article class="work" id="item-7">
+      <div class="work-img">
+        <span class="corner">No. 07 / 24</span>
+        <img src="图片素材/7-立夏.png" alt="立夏" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">立夏</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 07</span><span class="dot"></span><span>SUMMER · 夏</span></div>
+        <h3>立夏<span class="en">Beginning of Summer</span></h3>
+        <p class="intro">立夏是夏季的第一个节气，太阳到达黄经45°，标志着盛夏的开端与万物的繁茂生长。此时蝼蝈鸣叫不息，蚯蚓出土翻新，王瓜攀援而生，槐花飘香，麦浪翻滚，天地间一派欣欣向荣的景象。古代帝王要率百官举行隆重的迎夏仪式，民间则盛行秤人、吃立夏蛋、尝三鲜、煮鼎边糊等习俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"立夏"粒子消散字体，三级信息"Beginning of Summer"，中国风山水版画风格，淡水彩，吹墨艺术，一个小女孩和一条狗一只猫欣欣向荣地坐在草地上晒太阳的背影，炊烟袅袅，记忆里的大山，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 8 小满 -->
+    <article class="work" id="item-8">
+      <div class="work-img">
+        <span class="corner">No. 08 / 24</span>
+        <img src="图片素材/8-小满.png" alt="小满" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">小满</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 08</span><span class="dot"></span><span>SUMMER · 夏</span></div>
+        <h3>小满<span class="en">Grain Buds</span></h3>
+        <p class="intro">小满是夏季第二个节气，太阳到达黄经60°，意味着麦类等夏熟作物的籽粒开始灌浆饱满，但尚未完全成熟，故称"小满"。此时苦菜秀，靡草死，麦秋至，南方进入梅雨时节，北方麦田一片青黄。南方有"小满江河满"之说，民间还有祭车神、祈蚕节、食苦菜等独特习俗，蕴含着古人"满招损、谦受益"的人生智慧。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"小满"粒子消散字体，三级信息"Grain Buds"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩和猫狗坐在麦田边，麦穗刚刚灌浆，小女孩伸手轻抚麦芒，远处水车吱呀转动，蜻蜓停在狗鼻子上，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 9 芒种 -->
+    <article class="work" id="item-9">
+      <div class="work-img">
+        <span class="corner">No. 09 / 24</span>
+        <img src="图片素材/9-芒种.png" alt="芒种" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">芒种</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 09</span><span class="dot"></span><span>SUMMER · 夏</span></div>
+        <h3>芒种<span class="en">Grain in Ear</span></h3>
+        <p class="intro">芒种是二十四节气中的第九个节气，太阳到达黄经75°，意为"有芒的麦子快收，有芒的稻子可种"，是一个承前启后、连接夏熟与秋收的关键时节。此时螳螂生，鵙始鸣，反舌无声，南方水稻插秧正酣，北方麦收紧张繁忙，是一年中最为劳碌的"忙种"时节。民间有送花神、安苗祭、煮青梅、嫁树等富有诗意的传统习俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"芒种"粒子消散字体，三级信息"Grain in Ear"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩挥着草帽在麦田里奔跑，猫和狗跟在身后，收割后的麦垛堆成小山，夕阳把麦茬染成金色，布谷鸟飞过，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 10 夏至 -->
+    <article class="work" id="item-10">
+      <div class="work-img">
+        <span class="corner">No. 10 / 24</span>
+        <img src="图片素材/10-夏至.png" alt="夏至" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">夏至</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 10</span><span class="dot"></span><span>SUMMER · 夏</span></div>
+        <h3>夏至<span class="en">Summer Solstice</span></h3>
+        <p class="intro">夏至是二十四节气中最早被确定的一个，太阳到达黄经90°，直射北回归线，北半球迎来全年白昼最长、黑夜最短的一天。此时鹿角解，蝉始鸣，半夏生，木槿绽放，万物生长达到顶峰，阳气至盛而阴气始生。古人将其视为重要节日，民间有吃面、称人、消夏避伏、互赠折扇香囊等习俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"夏至"粒子消散字体，三级信息"Summer Solstice"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩和猫狗在老槐树下乘凉，狗伸出舌头喘气，猫趴在石墩上睡觉，小女孩抱着西瓜，蝉鸣声声，光影从树叶间洒下，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 11 小暑 -->
+    <article class="work" id="item-11">
+      <div class="work-img">
+        <span class="corner">No. 11 / 24</span>
+        <img src="图片素材/11-小暑.png" alt="小暑" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">小暑</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 11</span><span class="dot"></span><span>SUMMER · 夏</span></div>
+        <h3>小暑<span class="en">Minor Heat</span></h3>
+        <p class="intro">小暑为夏季第五个节气，"暑"即炎热，"小"则尚未达到极致，太阳到达黄经105°，意味着盛夏炎热的开始。此时温风至，蟋蟀居宇，鹰始鸷，荷花满塘，蝉鸣阵阵，三伏天将至，雷雨频繁。民间有食新、晒伏、晒书画、吃饺子、喝伏茶等丰富习俗，人们以此祭祀祖先、庆祝丰收。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"小暑"粒子消散字体，三级信息"Minor Heat"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩带着猫狗在荷塘边戏水，狗跳进浅水，猫蹲在荷叶下，小女孩用芦苇秆逗蜻蜓，荷花半开，热浪让远山微微扭曲，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 12 大暑 -->
+    <article class="work" id="item-12">
+      <div class="work-img">
+        <span class="corner">No. 12 / 24</span>
+        <img src="图片素材/12-大暑.png" alt="大暑" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">大暑</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 12</span><span class="dot"></span><span>SUMMER · 夏</span></div>
+        <h3>大暑<span class="en">Major Heat</span></h3>
+        <p class="intro">大暑是夏季最后一个节气，太阳到达黄经120°，正值"中伏"前后，是一年中阳光最猛烈、气温最高、雷阵雨最频繁的时段。此时腐草为萤，土润溽暑，大雨时行，空气湿热蒸腾，万物在酷烈中愈发繁盛。民间有饮伏茶、烧伏香、吃仙草、晒伏姜、送大暑船等独特习俗，体现着顺应天时、调和身心的古老养生智慧。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"大暑"粒子消散字体，三级信息"Major Heat"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩和猫狗在瀑布下的水潭边，狗泡在水里只露出头，猫躲在阴凉的石头上，小女孩用芭蕉叶扇风，水雾中隐约有彩虹，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 13 立秋 -->
+    <article class="work" id="item-13">
+      <div class="work-img">
+        <span class="corner">No. 13 / 24</span>
+        <img src="图片素材/13-立秋.png" alt="立秋" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">立秋</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 13</span><span class="dot"></span><span>AUTUMN · 秋</span></div>
+        <h3>立秋<span class="en">Beginning of Autumn</span></h3>
+        <p class="intro">立秋是秋季的第一个节气，太阳到达黄经135°，标志着炎夏渐去、秋天开始，但暑气尚未消尽，仍有"秋老虎"的余威。此时凉风至，白露生，寒蝉鸣，梧桐叶落，金风送爽，万物开始由繁茂生长转向成熟收敛。民间有贴秋膘、咬秋、晒秋、啃秋瓜、祭祀土地神等丰富习俗，迎接金风玉露、五谷登场的美好时节。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"立秋"粒子消散字体，三级信息"Beginning of Autumn"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩坐在高高的谷堆上，猫和狗卧在脚下，一片梧桐叶飘落在狗头上，远处有晒秋的簸箕，阳光变得金黄而温柔，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 14 处暑 -->
+    <article class="work" id="item-14">
+      <div class="work-img">
+        <span class="corner">No. 14 / 24</span>
+        <img src="图片素材/14-处暑.png" alt="处暑" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">处暑</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 14</span><span class="dot"></span><span>AUTUMN · 秋</span></div>
+        <h3>处暑<span class="en">End of Heat</span></h3>
+        <p class="intro">处暑是秋季第二个节气，"处"含有终止、退隐之意，太阳到达黄经150°，意味着暑气至此而止，炎热渐渐消退。此时鹰乃祭鸟，天地始肃，禾乃登，秋高气爽，云淡风轻，昼夜温差逐渐拉大。民间有放河灯、开渔节、吃鸭子、煎药茶等润燥养生的传统习俗，人们以美食与仪式辞别盛夏，迎接清爽宜人的金秋时节。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"处暑"粒子消散字体，三级信息"End of Heat"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩和猫狗在河边放河灯，狗望着水里的火光出神，猫用爪子拨弄狗尾巴草，天边最后一抹晚霞映在水面，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 15 白露 -->
+    <article class="work" id="item-15">
+      <div class="work-img">
+        <span class="corner">No. 15 / 24</span>
+        <img src="图片素材/15-白露.png" alt="白露" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">白露</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 15</span><span class="dot"></span><span>AUTUMN · 秋</span></div>
+        <h3>白露<span class="en">White Dew</span></h3>
+        <p class="intro">白露是反映自然界寒气增长的重要节气，太阳到达黄经165°，夜间气温下降，空气中的水汽凝结成晶莹的露珠，附在草叶花瓣之上，清亮剔透，故名"白露"。此时鸿雁来，玄鸟归，群鸟养羞，秋意愈浓，桂花飘香，丹枫初染。民间有饮白露茶、酿白露米酒、吃龙眼、采集"十样白"煨乌骨白毛鸡等独特习俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"白露"粒子消散字体，三级信息"White Dew"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩披着薄外套走在芦苇荡中，猫和狗跟在脚边，草叶上挂满露珠，一只候鸟从芦苇中惊起，晨雾弥漫，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 16 秋分 -->
+    <article class="work" id="item-16">
+      <div class="work-img">
+        <span class="corner">No. 16 / 24</span>
+        <img src="图片素材/16-秋分.png" alt="秋分" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">秋分</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 16</span><span class="dot"></span><span>AUTUMN · 秋</span></div>
+        <h3>秋分<span class="en">Autumnal Equinox</span></h3>
+        <p class="intro">秋分是二十四节气中的第十六个节气，太阳到达黄经180°，直射赤道，全球昼夜几乎等长，此后北半球昼短夜长、阴气渐盛。此时雷始收声，蛰虫坯户，水始涸，丹桂飘香，蟹肥菊黄，正是天高云淡、五谷飘香的丰收时节。秋分也被设立为中国农民丰收节，民间有祭月、竖蛋、吃秋菜、送秋牛图等富有仪式感的传统习俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"秋分"粒子消散字体，三级信息"Autumnal Equinox"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩和猫狗站在梯田最高处，月亮刚刚升起，太阳还未落下，昼夜平分，远处有打谷场的灯火，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 17 寒露 -->
+    <article class="work" id="item-17">
+      <div class="work-img">
+        <span class="corner">No. 17 / 24</span>
+        <img src="图片素材/17-寒露.png" alt="寒露" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">寒露</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 17</span><span class="dot"></span><span>AUTUMN · 秋</span></div>
+        <h3>寒露<span class="en">Cold Dew</span></h3>
+        <p class="intro">寒露是反映气候变化的节气，太阳到达黄经195°，气温较白露时更低，露水更凉，将凝结成霜。此时鸿雁来宾，雀入大水为蛤，菊有黄华，枫叶尽染，柿子红透，秋意走向深沉。民间盛行登高赏秋、观赏菊花、吃芝麻、品花糕、饮菊花酒等习俗，南方还有秋钓边、采茶捕蟹之乐。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"寒露"粒子消散字体，三级信息"Cold Dew"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩搓着手哈气，狗蜷缩在落叶堆里，猫钻进小女孩的棉袄怀里，远处枫林尽染，寒气让湖面升起白烟，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 18 霜降 -->
+    <article class="work" id="item-18">
+      <div class="work-img">
+        <span class="corner">No. 18 / 24</span>
+        <img src="图片素材/18-霜降.png" alt="霜降" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">霜降</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 18</span><span class="dot"></span><span>AUTUMN · 秋</span></div>
+        <h3>霜降<span class="en">Frost's Descent</span></h3>
+        <p class="intro">霜降是秋季的最后一个节气，太阳到达黄经210°，意味着天气更冷，露水凝结成霜，是秋季向冬季过渡的转折点。此时豺乃祭兽，草木黄落，蛰虫咸俯，柿挂枝头，红叶漫山，万物开始进入冬藏之态。民间有吃柿子、登高赏红叶、扫墓祭祖、进补食牛肉羊肉等丰富习俗，俗语云"补冬不如补霜降"。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"霜降"粒子消散字体，三级信息"Frost's Descent"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩蹲在地上用手指在结了霜的草地上画画，狗用鼻子拱霜花，猫踩着霜留下一串梅花印，柿子树上挂着零星果实，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 19 立冬 -->
+    <article class="work" id="item-19">
+      <div class="work-img">
+        <span class="corner">No. 19 / 24</span>
+        <img src="图片素材/19-立冬.png" alt="立冬" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">立冬</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 19</span><span class="dot"></span><span>WINTER · 冬</span></div>
+        <h3>立冬<span class="en">Beginning of Winter</span></h3>
+        <p class="intro">立冬是冬季的第一个节气，太阳到达黄经225°，意味着万物收藏、冬季正式开始，也代表着一年农事的全面结束。此时水始冰，地始冻，雉入大水为蜃，北风萧瑟，落叶满径，天地呈现一派肃杀而宁静之美。民间有祭祖、补冬、吃饺子、酿黄酒、迎冬贺冬等丰富习俗，在"立冬补冬、补嘴空"的俗谚中开启冬日慢生活的篇章。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"立冬"粒子消散字体，三级信息"Beginning of Winter"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩裹着红围巾，猫和狗挤在一个窝里，她正往灶台里添柴火，炊烟与晨雾混在一起，远山已经戴上了雪帽，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 20 小雪 -->
+    <article class="work" id="item-20">
+      <div class="work-img">
+        <span class="corner">No. 20 / 24</span>
+        <img src="图片素材/20-小雪.png" alt="小雪" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">小雪</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 20</span><span class="dot"></span><span>WINTER · 冬</span></div>
+        <h3>小雪<span class="en">Light Snow</span></h3>
+        <p class="intro">小雪是冬季第二个节气，太阳到达黄经240°，标志着天气逐渐变得寒冷，黄河流域开始降雪，但雪量不大、地不积雪，故名"小雪"。此时虹藏不见，天气上升地气下降，闭塞而成冬，万物开始潜藏蛰伏。民间有腌腊肉、灌腊肠、打糍粑、晒鱼干、酿小雪酒等独具风情的传统习俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"小雪"粒子消散字体，三级信息"Light Snow"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩仰头张嘴接雪花，狗在雪地上打滚，猫蹲在屋檐下看雪，第一场雪薄薄地覆在稻草垛上，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 21 大雪 -->
+    <article class="work" id="item-21">
+      <div class="work-img">
+        <span class="corner">No. 21 / 24</span>
+        <img src="图片素材/21-大雪.png" alt="大雪" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">大雪</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 21</span><span class="dot"></span><span>WINTER · 冬</span></div>
+        <h3>大雪<span class="en">Major Snow</span></h3>
+        <p class="intro">大雪是反映气候特征的节气，太阳到达黄经255°，雪量较小雪时显著增大，北方地区往往银装素裹、雪压松枝，呈现出"千里冰封，万里雪飘"的壮丽景象。此时鹖鴠不鸣，虎始交，荔挺出，江河封冻，大地静默。此时正是进补的最佳时节，民间有喝红薯粥、吃羊肉火锅、腌制咸货、观赏封河等独特习俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"大雪"粒子消散字体，三级信息"Major Snow"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩和狗在堆雪人，猫坐在雪人帽子上，鹅毛大雪纷纷扬扬，远处的村庄被大雪覆盖，只有红灯笼透出暖光，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 22 冬至 -->
+    <article class="work" id="item-22">
+      <div class="work-img">
+        <span class="corner">No. 22 / 24</span>
+        <img src="图片素材/22-冬至.png" alt="冬至" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">冬至</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 22</span><span class="dot"></span><span>WINTER · 冬</span></div>
+        <h3>冬至<span class="en">Winter Solstice</span></h3>
+        <p class="intro">冬至是二十四节气中最早被确定的节气之一，太阳到达黄经270°，直射南回归线，北半球白昼最短、黑夜最长，此后阳气始生、白昼渐长。此时蚯蚓结，麋角解，水泉动，"数九寒天"由此开始。民间素有"冬至大如年"之说，是仅次于春节的重要节日，北方家家户户吃饺子，南方则食汤圆寓意团圆美满。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"冬至"粒子消散字体，三级信息"Winter Solstice"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩和猫狗围坐在炉火旁，窗外是漫长的冬夜，她正包着饺子，狗趴在地毯上，猫卷在毛线篮里，墙上影子温暖而安详，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 23 小寒 -->
+    <article class="work" id="item-23">
+      <div class="work-img">
+        <span class="corner">No. 23 / 24</span>
+        <img src="图片素材/23-小寒.png" alt="小寒" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">小寒</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 23</span><span class="dot"></span><span>WINTER · 冬</span></div>
+        <h3>小寒<span class="en">Minor Cold</span></h3>
+        <p class="intro">小寒是冬季第五个节气，太阳到达黄经285°，正值"三九"前后，是一年中最寒冷的时段之一，俗语云"小寒胜大寒"。此时雁北乡，鹊始巢，雉始雊，朔风凛冽，冰封万里，腊梅却在严寒中悄然吐蕊飘香。民间有吃菜饭、煮糯米饭、熬腊八粥、腌制腊味、画九九消寒图等温暖人心的传统习俗。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"小寒"粒子消散字体，三级信息"Minor Cold"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩穿着厚厚的棉袄喂麻雀，猫和狗趴在窗台上看，院子里晾着腊肉和冰凌，呵出的白气清晰可见，冰河上有裂纹，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- 24 大寒 -->
+    <article class="work" id="item-24" style="border-bottom:none">
+      <div class="work-img">
+        <span class="corner">No. 24 / 24</span>
+        <img src="图片素材/24-大寒.png" alt="大寒" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+        <div class="ph" style="display:none">大寒</div>
+      </div>
+      <div class="work-text">
+        <div class="meta"><span>NO. 24</span><span class="dot"></span><span>WINTER · 冬</span></div>
+        <h3>大寒<span class="en">Major Cold</span></h3>
+        <p class="intro">大寒是二十四节气的最后一个节气，太阳到达黄经300°，标志着寒冷至极、岁末将至，过后便迎来新一轮的立春。此时鸡始乳，征鸟厉疾，水泽腹坚，天地间一派冰封凝固之象，却也孕育着春回大地的勃勃生机。民间忙着除旧布新、扫尘洁屋、写春联、贴年画、置办年货、祭灶迎春，处处洋溢着辞旧迎新的喜悦氛围。</p>
+        <details class="prompt"><summary>创作提示词 / PROMPT</summary>
+          <p>艺术海报设计，手写书法大标题"大寒"粒子消散字体，三级信息"Major Cold"，中国风山水版画风格，淡水彩，吹墨艺术，小女孩和猫狗挤在雪洞做的简易小屋里，外面风雪肆虐，里面点着一盏油灯，狗紧挨着小女孩，猫缩在她膝盖上，等待春天最后的严寒过去，二次曝光+蒙太奇式晕染，cloudcore，梦幻，极简主义，大量留白。</p>
+        </details>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ===== 结语 ===== -->
+<section class="outro" id="outro">
+  <div class="wrap">
+    <p class="eyebrow" style="margin-bottom:18px">Epilogue · 结 语</p>
+    <h2>二十四节气，<em>周而复始</em><br>愿这组视觉笔记，为你留存四季轮转中那些<br>微小的诗意与温暖。</h2>
+    <p>
+      从立春的破土草芽，到大寒的雪洞炉火；
+      一个小女孩与她的猫和狗，穿行于二十四帧画面之间。
+      四季更迭，风物流转——这是一年之诗，也是一封写给时间的情书。
+    </p>
+    <div class="seal">節氣</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© MMXXVI · 光阴的诗 · A VISUAL ALMANAC OF 24 SOLAR TERMS · DESIGNED WITH CARE</div>
+</footer>
+
+<a class="top" id="topBtn" href="#cover" aria-label="back to top">↑</a>
+
+<script>
+  // 回到顶部按钮
+  const topBtn = document.getElementById('topBtn');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) topBtn.classList.add('show');
+    else topBtn.classList.remove('show');
+  });
+
+  // 平滑滚动
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length > 1) {
+        const t = document.querySelector(id);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
